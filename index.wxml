@@ -1,0 +1,308 @@
+<view style='--leftcolor:{{bgFrom}};--rightcolor:{{bgTo}}; --area:{{navigationBarHeight+10}}px;' class='box'>
+<view class="covers" catchtouchmove="true" catchtap="changeCovers" wx:if="{{showTotail}}">
+<image class="covers-bg" mode="widthFix" src="https://file.zipindao.tv/weshop/1907/05/143018159.png"></image>
+<image class="covers-logo {{showTotail?'anmation-al':''}}" mode="aspectFill" src="https://file.zipindao.tv/weshop/1906/24/150117761.png"></image>
+</view>
+  <view class="header-top" style="height:{{navigationBarHeight}}px;">
+    <view class='header-sta' style="height:{{statusBarHeight}}px"></view>
+    <view class='header-content' style='height:{{navigationBarHeight-statusBarHeight}}px'>
+      <text>{{title}}</text>
+    </view>
+  </view>
+  <view class='header-sec' style='margin-top:{{navigationBarHeight}}px'>
+    <view class='header-area' catchtap='toArea'>
+      <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/24/150049596.png'></image>
+      <text>{{cityArea.cityname}}</text>
+    </view>
+    <view class='search-view' catchtap='toSearch'>
+      <icon size='15' color='#fff' type='search' class='serach_icon'></icon>
+      搜房间、主播
+    </view>
+    <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/24/150117761.png' class='sec-img {{showTotail?"op":""}}' catchtap='openLive'></image>
+  </view>
+  <view class='line'></view>
+  <swiper class='fir-banner' previous-margin="24rpx" next-margin='24rpx' circular>
+    <swiper-item wx:for="{{slide}}" wx:key="id" catchtap="toTab" data-url="{{item.url}}">
+      <image mode='aspectFill' src='{{item.img}}'></image>
+    </swiper-item>
+  </swiper>
+  <view class='tab-view'>
+    <view class='top-tab'>
+      <view class='tab-item {{tab==0?"sel-tab-item":""}}' catchtap='changeTab' data-tab='0'>推荐</view>
+      <view class='tab-item {{tab==1?"sel-tab-item":""}}' catchtap='changeTab' data-tab='1'>{{cityArea.cityname}}</view>
+      <view class='tab-item {{tab==2?"sel-tab-item":""}}' catchtap='changeTab' data-tab='2'>关注</view>
+      <view class='tab-item {{tab==3?"sel-tab-item":""}}' catchtap='changeTab' data-tab='3'>排行</view>
+    </view>
+  </view>
+  <!-- 第一模块 -->
+  <view class='tab-fir' wx:if="{{tab==0}}">
+    <view class='fir-top'> </view>
+    <swiper class='banner' indicator-dots indicator-active-color="{{bgFrom}}" wx:if="{{pk.length!=0}}">
+      <block wx:for="{{pk}}" wx:key="{{index}}">
+        <swiper-item catchtap="toDetail" data-url="{{item.url}}">
+          <view class='banner-item'>
+            <image mode='aspectFill' src="https://file.zipindao.tv/weshop/1906/24/171604408.png" class='banner-item-logo'></image>
+            <view class='banner-content'>
+              <view class="banner-big-content">
+                <view class='banner-content-left banner-content-item' catchtap='tolive' data-id='{{item.srcid}}'>
+                  <image mode='aspectFill' src='{{item.poster1}}'></image>
+                  <view class='banner-pv'>
+                    <text></text>
+                    <text>{{["未开播","回放","直播中"][item.state1-1]}}</text>
+                    <text>|</text>
+                    <text>{{item.pv1}}</text>
+                    <text>观看</text>
+                  </view>
+                  <view class='banner-zan' wx:if="{{item.zan1!='0'}}">
+                    <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/12/154025244.png'></image>{{item.zan1}}
+                  </view>
+                </view>
+                <view class="banner-content-tit">{{item.shop1}}</view>
+              </view>
+              <view class="banner-big-content">
+                <view class='banner-content-right banner-content-item' catchtap='tolive' data-id='{{item.tgtid}}'>
+                  <image mode='aspectFill' src='{{item.poster2}}'></image>
+                  <view class='banner-zan' wx:if="{{item.zan2!='0'}}">
+                    <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/12/154025244.png'></image>{{item.zan2}}
+                  </view>
+                  <view class='banner-pv'>
+                    <text></text>
+                    <text>{{["未开播","回放","直播中"][item.state2-1]}}</text>
+                    <text>|</text>
+                    <text>{{item.pv2}}</text>
+                    <text>观看</text>
+                  </view>
+                </view>
+                <view class="banner-content-tit">{{item.shop2}}</view>
+              </view>
+            </view>
+            <view class='banner-bto'>
+              <view class="banner-bto-item">
+                <image mode='aspectFill' src='{{item.icon1}}' class='banner-bto-left'></image>
+                <view class="banner-bto-count" wx:if="{{item.zan1!='0'}}">{{item.zan1}}票</view>
+                <view class="banner-bto-up" catchtap="upPk" data-id="{{item.srcid}}" data-idx="{{index}}" data-sta="1">支持</view>
+              </view>
+              <view class="banner-bto-item">
+                <image mode='aspectFill' src='{{item.icon2}}' class='banner-bto-right'></image>
+                <view class="banner-bto-count" wx:if="{{item.zan2!='0'}}">{{item.zan2}}票</view>
+                <view class="banner-bto-up banner-bto-right-color" catchtap="upPk" data-id="{{item.tgtid}}" data-idx="{{index}}" data-sta="2">支持</view>
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+    <image mode="aspectFill" src="https://file.zipindao.tv/weshop/1907/04/210018970.jpg" class="no-pk" wx:if="{{pk.length==0}}"></image>
+    <view class='recommend'>
+      <block wx:for="{{tuijian}}" wx:key="id">
+        <view class='recommend-item' catchtap='tolive' data-id='{{item.id}}'>
+          <image mode='aspectFill' src='{{item.poster}}' class='recommend-item-logo'></image>
+          <view class='rec-cover'>
+            <image mode='aspectFill' src='{{item.icon}}'></image>
+            <text>{{item.nick}}</text>
+          </view>
+          <view class='recommend-tit'>{{item.title}}</view>
+        </view>
+      </block>
+    </view>
+    <view class='fir-tab'>
+      <view class="fir-box">
+        <view class='fir-tab-item {{0==firtab?"sel-fir-tab-item":""}}' data-firtab='0' catchtap='changefirtab' data-id='{{item.id}}' data-id="0">推荐</view>
+        <block wx:for="{{cata}}" wx:key="id">
+          <view class='fir-tab-item {{index+1==firtab?"sel-fir-tab-item":""}}' data-firtab='{{index+1}}' catchtap='changefirtab' data-id='{{item.id}}'>{{item.name}}</view>
+        </block>
+      </view>
+    </view>
+    <view class='live-list'>
+      <view class='live-list-item' wx:for="{{live.list}}" wx:key="id" catchtap='tolive' data-id='{{item.id}}'>
+        <image mode='aspectFill' src='{{item.poster}}' class='live-item-logo'></image>
+        <!-- <view class='live-item-cover'></view> -->
+        <view catchtap="pre">
+          <form class="make_time" bindsubmit="toMakeTime" wx:if="{{item.state==1&&item.ltime>0}}" report-submit="true">
+            <button class="make_time_tit {{item.isyuyue!=0?'sel_make_time_tit':''}}" form-type="submit" data-idx="{{index}}" data-isyuyue="{{item.isyuyue}}" data-id="{{item.id}}">{{item.isyuyue!=0?'已预约':'点击预约'}}</button>
+            <view>{{timer[item.id]}}</view>
+          </form>
+        </view>
+        <view class='live-item-tit'>
+          <image mode='aspectFill' src='{{item.logo}}'></image>
+          <text>{{item.nick}}</text>
+          <!-- <text>|</text>
+        <text>上海</text> -->
+        </view>
+        <view class='live-item-bto'>
+          <view class='live-cot-two' wx:if="{{item.zan!=0}}">
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/12/154025244.png'></image>{{item.zan}}
+          </view>
+          <view class='live-bto-name'>{{item.title}}</view>
+          <view class='live-cot-one'>
+            <view class='one-text {{item.state!=3?"no-one-text":""}}'>
+              <text></text>{{["未开播","回放","直播中"][item.state-1]}}</view>
+            <text class="two-text" wx:if="{{item.pv!='0'}}">{{item.pv}}观看</text>
+          </view>
+        </view>
+        <view class='live-item-tag' wx:if="{{item.goods.length!=0}}">
+          <!-- <text>{{catname[item.cataid]}}</text>
+          <view class='item-tag-view'>
+            <text>1234</text>
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/24/150137306.png'></image>
+          </view> -->
+          <view class="live-tag-item" wx:for="{{item.goods}}" wx:key="{{idx}}" wx:for-item="it" wx:for-index="idx" catchtap="toGoodsdetail" data-goodsid="{{it.goodsid}}">
+            <image mode="aspectFill" src="{{it.goodsicon}}"></image>
+            <view class="tag-cover">￥ {{it.price}}</view>
+          </view>
+          <view class="live-tag-item last-tag-item">
+            <view>
+              <view>全部宝贝</view>
+              <view>{{item.goodscnt}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 第二模块 -->
+  <view class='tab-two' wx:if="{{tab==1}}">
+    <view class='live-list'>
+      <view class='live-list-item' wx:for="{{live.list}}" wx:key="id" catchtap='tolive' data-id='{{item.id}}'>
+        <image mode='aspectFill' src='{{item.poster}}' class='live-item-logo'></image>
+        <!-- <view class='live-item-cover'></view> -->
+        <view catchtap="pre">
+          <form class="make_time" bindsubmit="toMakeTime" wx:if="{{item.state==1&&item.ltime>0}}" report-submit="true">
+            <button class="make_time_tit {{item.isyuyue!=0?'sel_make_time_tit':''}}" form-type="submit" data-idx="{{index}}" data-isyuyue="{{item.isyuyue}}" data-id="{{item.id}}">{{item.isyuyue!=0?'已预约':'点击预约'}}</button>
+            <view>{{timer[item.id]}}</view>
+          </form>
+        </view>
+        <view class='live-item-tit'>
+          <image mode='aspectFill' src='{{item.logo}}'></image>
+          <text>{{item.nick}}</text>
+          <!-- <text>|</text>
+        <text>上海</text> -->
+        </view>
+        <view class='live-item-bto'>
+          <view class='live-cot-two' wx:if="{{item.zan!=0}}">
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/12/154025244.png'></image>{{item.zan}}
+          </view>
+          <view class='live-bto-name'>{{item.title}}</view>
+          <view class='live-cot-one'>
+            <view class='one-text {{item.state!=3?"no-one-text":""}}'>
+              <text></text>{{["未开播","回放","直播中"][item.state-1]}}</view>
+            <text class="two-text" wx:if="{{item.pv!='0'}}">{{item.pv}}观看</text>
+          </view>
+        </view>
+        <view class='live-item-tag' wx:if="{{item.goods.length!=0}}">
+          <!-- <text>{{catname[item.cataid]}}</text>
+          <view class='item-tag-view'>
+            <text>1234</text>
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/24/150137306.png'></image>
+          </view> -->
+          <view class="live-tag-item" wx:for="{{item.goods}}" wx:key="{{idx}}" wx:for-item="it" wx:for-index="idx">
+            <image mode="aspectFill" src="{{it.goodsicon}}"></image>
+            <view class="tag-cover">￥ {{it.price}}</view>
+          </view>
+          <view class="live-tag-item last-tag-item">
+            <view>
+              <view>全部宝贝</view>
+              <view>{{item.goodscnt}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 第三模块 -->
+  <view class='tab-sec' wx:if="{{tab==2}}">
+    <view class='my-follow'>
+      <view class='follow-tit' wx:if="{{mylikes.length!=0}}">主播动态</view>
+      <view class='follow-list' wx:if="{{mylikes.length!=0}}">
+        <view class='follow-list-item' wx:for="{{mylikes}}" wx:key="roomid" catchtap='tolive' data-id='{{item.id}}'>
+          <image mode='aspectFill' src='{{item.poster}}' class='follow-item-logo'></image>
+          <view class='live-cot-one live-pos'>
+            <view class='one-text {{item.state!=3?"no-one-text":""}}'>
+              <text></text>{{["未开播","回放","直播中"][item.state-1]}}</view>
+            <text class="two-text" wx:if="{{item.pv!=0}}">{{item.pv}}观看</text>
+          </view>
+          <view class='follow-item-name'>
+            <image mode='aspectFill' src='{{item.icon}}'></image>
+            <text>{{item.nick}}</text>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{mylikes.length==0}}">
+        <image mode='widthFix' src='https://file.zipindao.tv/weshop/1906/13/170108907.png' class='no-follow'></image>
+        <view class="null">您还没有关注主播哦~</view>
+      </block>
+    </view>
+    <view class='anchor-rec'>
+      <view class='anchor-tit'>主播推荐
+        <image mode='widthFix' src='https://file.zipindao.tv/weshop/1906/13/113940644.png'></image>
+      </view>
+      <view class='anchor-list'>
+        <view class='anchor-item' wx:for="{{tuijian}}" wx:key="id" catchtap='tolive' data-id='{{item.id}}'>
+          <view class='anchor-item-left'>
+            <image mode='aspectFill' src='{{item.icon}}' class='anchor-left-logo'></image>
+            <view class='anchor-left-data'>
+              <text>{{item.nick}}</text>
+              <view class='anchor-left-area'>
+                <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/13/161441739.png'></image>
+                {{item.region_name}}</view>
+              <text>{{item.merchants_name}}</text>
+            </view>
+          </view>
+          <view class='anchor-item-right'>
+            <view class='anchor-right-top {{item.state!=3?"anchor-playback":""}}'>
+              <text style='opacity:{{item.pv==0?"0":"1"}}'>{{item.pv}}人在看</text>
+              <text style='opacity:{{item.pv==0?"0":"1"}}'></text>
+              <text>{{["未开播","回放","直播中"][item.state-1]}}</text>
+            </view>
+            <view class='anchor-right-bot'>
+              <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/13/161451228.png' class='{{item.isgz!=0?"hid-img":""}}' catchtap='followShop' data-shopid='{{item.shopid}}' data-index='{{index}}' data-tag='1'></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 第四模块 -->
+  <view class='tab-thr' wx:if="{{tab==3}}">
+    <view class='anchor-list'>
+      <view class='anchor-item' wx:for="{{rank.list}}" wx:key="id" catchtap='tolive' data-id='{{item.id}}'>
+        <view class='anchor-item-left'>
+          <image wx:if="{{index<3}}" class="anchor-item-rank" src="{{index<1?'https://file.zipindao.tv/weshop/1901/17/092258348.png':index<2?'https://file.zipindao.tv/weshop/1901/17/092321694.png':'https://file.zipindao.tv/weshop/1901/17/092338718.png'}}" mode="widthFix"></image>
+          <image mode='aspectFill' src='{{item.icon}}' class='anchor-left-logo'></image>
+          <view class='anchor-left-data'>
+            <text>{{item.nick}}</text>
+            <view class='anchor-left-area'>
+              <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/13/161441739.png'></image>
+              {{item.region_name}}</view>
+            <text>{{item.merchants_name}}</text>
+          </view>
+        </view>
+        <view class='anchor-item-right'>
+          <view class='anchor-right-top {{item.state!=3?"anchor-playback":""}}'>
+            <text style='opacity:{{item.pv==0?"0":"1"}}'>{{item.pv}}人在看</text>
+            <text style='opacity:{{item.pv==0?"0":"1"}}'></text>
+            <text>{{["未开播","回放","直播中"][item.state-1]}}</text>
+          </view>
+          <view class='anchor-right-bot'>
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/13/161458105.png' wx:if="{{item.totalpv!=0}}"></image>
+            <text wx:if="{{item.totalpv!=0}}">{{item.totalpv}}</text>
+            <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/13/161451228.png' class='{{item.isgz!=0?"hid-img":""}}' catchtap='followShop' data-shopid='{{item.shopid}}' data-index='{{index}}' data-tag='2'></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 发起直播 -->
+<view class='cover-view' catchtouchmove="true" catchtap='openLive' wx:if="{{openLive}}"></view>
+<view class='open-live' wx:if="{{openLive}}" catchtap='pre'>
+  <view class='open-live-content'>
+    <view>
+      <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/25/153119448.png' class='{{openLive?"moveimg":""}}'></image>店铺直播
+    </view>
+    <view>
+      <image mode='aspectFill' src='https://file.zipindao.tv/weshop/1906/25/153138495.png' class='{{openLive?"moveimg":""}}'></image>网红直播
+    </view>
+  </view>
+  <image mode='aspectFill' src='/images/shop_close.png' class='close-open' catchtap='openLive'></image>
+</view>
